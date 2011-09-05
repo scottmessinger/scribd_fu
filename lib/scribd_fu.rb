@@ -179,12 +179,19 @@ module ScribdFu
         include ScribdFu::Paperclip::InstanceMethods
       end
 
+      def load_carrierwave
+        require 'scribd_fu/carrierwave'
+        include ScribdFu::Carrierwave::InstanceMethods
+      end
+      # 
       # Load either AttachmentFu or Paperclip-specific methods
       def load_base_plugin(str)
         if str == 'AttachmentFu'
           load_attachment_fu
         elsif str == 'Paperclip'
           load_paperclip
+        elsif str == 'Carrierwave'
+          load_carrierwave
         else
           raise ScribdFuError, "Sorry, only Attachment_fu and Paperclip are supported."
         end
