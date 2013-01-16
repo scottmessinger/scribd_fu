@@ -35,8 +35,12 @@ module ScribdFu
 
   # Available parameters for the JS API
   # http://www.scribd.com/publisher/api/api?method_name=Javascript+API
+  #Available_JS_Params = [ :height, :width, :page, :my_user_id, :search_query,
+                          #:jsapi_version, :disable_related_docs, :mode, :auto_size, :hide_disabled_buttons, :hide_full_screen_button]
+
   Available_JS_Params = [ :height, :width, :page, :my_user_id, :search_query,
-                          :jsapi_version, :disable_related_docs, :mode, :auto_size, :hide_disabled_buttons, :hide_full_screen_button]
+                          :jsapi_version, :disable_related_docs, :mode, :auto_size, :use_ssl, 
+                          :hide_disabled_buttons, :useIntegratedUi, :custom_logo_image_url, :src_path]
 
   class ScribdFuError < StandardError #:nodoc:
   end
@@ -209,7 +213,11 @@ module ScribdFu
     # This is called +after_save+ and cannot be called earlier,
     # so don't get any ideas.
     def upload_to_scribd
-      ScribdFu::upload(self, file_path) if scribdable?
+      begin 
+        ScribdFu::upload(self, file_path) if scribdable?
+      rescue
+         return false
+      end
     end
 
     # Checks whether the associated file is convertable to iPaper
